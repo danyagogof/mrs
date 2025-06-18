@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+  <div style="flex: 2; min-width: 0;">
+    <h1>Ваш профіль</h1>
+    <p class="profile-username">{{ user.username }}</p>
+    {% if user.avatar %}
+      <img src="{{ user.avatar.url }}" alt="Аватарка" style="width:180px;height:180px;border-radius:50%;object-fit:cover;">
+    {% endif %}
+    {% if user.bio %}
+      <p><strong>Про себе:</strong> {{ user.bio }}</p>
+    {% endif %}
+    {% if user.contacts %}
+      <p><strong>Контактна інформація:</strong> {{ user.contacts }}</p>
+    {% endif %}
+    <a href="{% url 'profile_update' %}"><button>Редагувати профіль</button></a>
+    <form action="{% url 'logout' %}" method="post" style="display:inline; margin-left:1rem;">
+      {% csrf_token %}
+      <button type="submit" style="background:#c00; color:white; border:none; padding:0.5rem 1rem; border-radius:4px; margin-top:0.5rem;">Вийти</button>
+    </form>
+    <hr>
+    <h2>Мої оцінки</h2>
+    {% if ratings %}
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+        {% for rating in ratings %}
+          <div style="border: 1px solid #ccc; padding: 1rem; text-align: center;">
+            <a href="{% url 'album_detail' rating.album.spotify_id %}">
+              <img src="{{ rating.album.cover_image_url }}" alt="{{ rating.album.title }}" style="width: 100%; height: auto;">
+            </a>
+            <p><strong>{{ rating.album.title }}</strong></p>
+            <p>{{ rating.album.artist }}</p>
+            <p><strong>Моя оцінка: {{ rating.score }}/10</strong></p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Ви ще не оцінили жодного альбому. <a href="{% url 'album_search' %}">Час це виправити!</a></p>
+    {% endif %}
+  </div>
+  <aside class="sidebar-friends">
+    <h2>Мої друзі</h2>
+    <ul>
+      {% for friend in user.friends.all %}
+        <li style="display:flex;align-items:center;gap:0.5em;justify-content:center;">
+          {% if friend.avatar %}
+            <img src="{{ friend.avatar.url }}" alt="Аватарка" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+          {% else %}
+            <span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#ddd;"></span>
+          {% endif %}
+          <a href="{% url 'friend_profile' friend.id %}">{{ friend.username }}</a>
+        </li>
+      {% empty %}
+        <li>У вас поки немає друзів. <a href="{% url 'user_search' %}">Знайти друзів</a></li>
+      {% endfor %}
+    </ul>
+  </aside>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Редагувати профіль</h1>
+  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="margin-bottom:1em;">
+      <label for="id_avatar">Аватарка:</label><br>
+      {% if user.avatar %}
+        <img src="{{ user.avatar.url }}" alt="Аватарка" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+      {% endif %}
+      {{ form.avatar }}
+    </div>
+    <div style="margin-bottom:1em;">
+      <label for="id_bio">Опис про себе:</label><br>
+      {{ form.bio }}
+    </div>
+    <div style="margin-bottom:1em;">
+      <label for="id_contacts">Контактна інформація:</label><br>
+      {{ form.contacts }}
+    </div>
+    {{ form.username }}<br>
+    {{ form.email }}<br>
+    <button type="submit">Зберегти зміни</button>
+  </form>
+
+{% endblock %}

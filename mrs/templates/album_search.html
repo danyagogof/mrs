@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Пошук Альбомів</h1>
+
+  <form method="get" action="{% url 'album_search' %}">
+    <input type="text" name="q" placeholder="Введіть назву альбому..." value="{{ query|default_if_none:'' }}">
+    <input type="text" name="artist" placeholder="Введіть ім'я виконавця..." value="{{ artist|default_if_none:'' }}">
+    <button type="submit">Пошук</button>
+  </form>
+
+  <hr>
+
+  <h2>Результати пошуку</h2>
+  
+  {% if results %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+      {% for item in results %}
+        <div style="border: 1px solid #ccc; padding: 1rem; text-align: center;">
+          {% if item.images %}
+            <img src="{{ item.images.0.url }}" alt="{{ item.name }}" style="width: 100%; height: auto;">
+          {% endif %}
+          <p><strong>{{ item.name }}</strong></p>
+          <p>{{ item.artists.0.name }} ({{ item.release_date|slice:":4" }})</p>
+          
+          <!-- TODO: Додати кнопку "Оцінити" -->
+          <a href="{% url 'album_detail' item.id %}">Оцінити</a>         </div>
+      {% endfor %}
+    </div>
+  {% elif query %}
+    <p>Нічого не знайдено за запитом "{{ query }}".</p>
+  {% else %}
+    <p>Введіть щось у поле пошуку, щоб почати.</p>
+  {% endif %}
+
+{% endblock %}

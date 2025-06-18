@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; gap: 2rem; align-items: flex-start;">
+  <div style="flex: 2; min-width: 0;">
+    <h1>Профіль користувача: {{ friend.username }}</h1>
+    {% if friend.avatar %}
+      <img src="{{ friend.avatar.url }}" alt="Аватарка" style="width:180px;height:180px;border-radius:50%;object-fit:cover;">
+    {% endif %}
+    {% if friend.bio %}
+      <p><strong>Про себе:</strong> {{ friend.bio }}</p>
+    {% endif %}
+    {% if friend.contacts %}
+      <p><strong>Контактна інформація:</strong> {{ friend.contacts }}</p>
+    {% endif %}
+    {# Email видалено #}
+    {% if is_friend %}
+      <form action="{% url 'remove_friend' friend.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:#c00; color:white; border:none; padding:0.5rem 1rem; border-radius:4px;">Видалити з друзів</button>
+      </form>
+    {% else %}
+      <form action="{% url 'add_friend' friend.id %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:#090; color:white; border:none; padding:0.5rem 1rem; border-radius:4px;">Додати в друзі</button>
+      </form>
+    {% endif %}
+    <hr>
+    <h2>Оцінки користувача</h2>
+    {% if ratings %}
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+        {% for rating in ratings %}
+          <div style="border: 1px solid #ccc; padding: 1rem; text-align: center;">
+            <a href="{% url 'album_detail' rating.album.spotify_id %}">
+              <img src="{{ rating.album.cover_image_url }}" alt="{{ rating.album.title }}" style="width: 100%; height: auto;">
+            </a>
+            <p><strong>{{ rating.album.title }}</strong></p>
+            <p>{{ rating.album.artist }}</p>
+            <p><strong>Оцінка: {{ rating.score }}/10</strong></p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Користувач ще не оцінив жодного альбому.</p>
+    {% endif %}
+  </div>
+  <aside class="sidebar-friends">
+    <h2>Друзі користувача</h2>
+    <ul>
+      {% for f in friend.friends.all %}
+        <li style="display:flex;align-items:center;gap:0.5em;justify-content:center;">
+          {% if f.avatar %}
+            <img src="{{ f.avatar.url }}" alt="Аватарка" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+          {% else %}
+            <span style="display:inline-block;width:28px;height:28px;border-radius:50%;background:#ddd;"></span>
+          {% endif %}
+          <a href="{% url 'friend_profile' f.id %}">{{ f.username }}</a>
+        </li>
+      {% empty %}
+        <li>У користувача поки немає друзів.</li>
+      {% endfor %}
+    </ul>
+  </aside>
+</div>
+{% endblock %} 

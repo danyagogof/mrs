@@ -1,0 +1,169 @@
+body { font-family: sans-serif; margin: 0; background-color: #f4f4f4; color: #222; transition: background 0.3s, color 0.3s; }
+nav { background: #fff; color: #222; padding: 1rem; display: flex; align-items: center; justify-content: center; position: relative; transition: background 0.3s, color 0.3s; }
+nav .nav-links { flex: 1; display: flex; justify-content: flex-start; align-items: center; gap: 0.5em; }
+nav .nav-right { flex: 0 0 auto; margin-left: auto; display: flex; align-items: center; }
+nav a { color: #222; text-decoration: none; margin-right: 1rem; transition: color 0.3s; }
+nav a.nav-btn {
+    background: #333;
+    color: #fff !important;
+    border-radius: 6px;
+    padding: 0.5em 1.2em;
+    margin-left: 0.5em;
+    border: 1.5px solid #333;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+nav a.nav-btn:hover {
+    background: #fff;
+    color: #333 !important;
+    border: 1.5px solid #333;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+body.dark-theme nav a.nav-btn {
+    background: #eee;
+    color: #111 !important;
+    border: 1px solid #eee;
+}
+body.dark-theme nav a.nav-btn:hover {
+    background: #232323;
+    color: #fff !important;
+    border: 1px solid #eee;
+}
+.nav-center-title {
+    font-family: 'Special Elite', monospace, sans-serif;
+    font-size: 2rem;
+    color: #222;
+    letter-spacing: 0.1em;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    transition: color 0.3s;
+}
+.container { max-width: 800px; margin: 2rem auto; padding: 2rem; background-color: white; border-radius: 8px; }
+form p { display: flex; flex-direction: column; }
+button { padding: 0.5rem 1rem; background-color: #333; color: white; border: none; cursor: pointer; }
+body.dark-theme { background: #181818; color: #eee; }
+body.dark-theme .container { background: #232323; color: #eee; }
+body.dark-theme nav { background: #111; color: #eee; }
+body.dark-theme nav a { color: #fff; }
+body.dark-theme .nav-center-title { color: #fff; }
+#theme-toggle {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1000;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+#theme-toggle:hover { background: #555; }
+a { color: #111; text-decoration: none; transition: color 0.3s; }
+a:hover { text-decoration: underline; }
+body.dark-theme a { color: #fff; }
+body.dark-theme a:hover { color: #fff; text-decoration: underline; }
+body.dark-theme nav a { color: #fff; }
+
+.profile-username {
+  font-size: 1.1em;
+  color: #111;
+  margin-top: -0.5em;
+  margin-bottom: 1em;
+  transition: color 0.3s;
+}
+body.dark-theme .profile-username {
+  color: #fff;
+}
+
+.sidebar-friends {
+  flex: 1;
+  min-width: 200px;
+  max-width: 260px;
+  background: #fafbfc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  margin-top: 0.5rem;
+  transition: background 0.3s, color 0.3s;
+}
+.sidebar-friends h2 {
+  margin-top: 0;
+  margin-bottom: 1em;
+  color: #222;
+  font-size: 1.5em;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.01em;
+  transition: color 0.3s;
+}
+.sidebar-friends ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar-friends li {
+  margin-bottom: 1em;
+  text-align: center;
+  font-size: 1.1em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  justify-content: center;
+}
+.sidebar-friends a {
+  color: #111;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.sidebar-friends a:hover {
+  color: #1976d2;
+  text-decoration: underline;
+}
+body.dark-theme .sidebar-friends {
+  background: #18191a;
+  color: #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+body.dark-theme .sidebar-friends h2 {
+  color: #fff;
+}
+body.dark-theme .sidebar-friends a {
+  color: #fff;
+}
+body.dark-theme .sidebar-friends a:hover {
+  color: #90caf9;
+}
+
+.user-profile-link {
+  color: #111;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.user-profile-link:hover {
+  color: #1976d2;
+  text-decoration: underline;
+}
+body.dark-theme .user-profile-link {
+  color: #fff;
+}
+body.dark-theme .user-profile-link:hover {
+  color: #90caf9;
+} 

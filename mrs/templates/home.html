@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Головна сторінка</h1>
+
+<p>
+  Ласкаво просимо на сайт оцінювання музичних альбомів!<br>
+  Тут ви можете знаходити альбоми, ставити їм оцінки, ділитися своїми вподобаннями, знаходити друзів за інтересами та переглядати їхні оцінки. Мета сайту — допомогти меломанам знаходити нову музику, обмінюватися враженнями та створювати спільноту однодумців.
+</p>
+
+<h2>Список альбомів які оцінили користувачі</h2>
+{% if albums %}
+    <ul>
+    {% for album in albums %}
+        <li style="display: flex; align-items: center; gap: 0.7em; margin-bottom: 0.7em;">
+            {% if album.cover_image_url %}
+                <img src="{{ album.cover_image_url }}" alt="Обкладинка {{ album.title }}" style="height: 32px; width: 32px; object-fit: cover; margin-right: 10px; border-radius: 4px;">
+            {% endif %}
+            <a href="{% url 'album_detail' album.spotify_id %}">{{ album.title }}</a>
+            {% if album.avg_score %}
+                <span style="color: #888; font-size: 0.95em;">({{ album.avg_score|floatformat:1 }})</span>
+            {% endif %}
+            <span style="color: #888; font-size: 0.95em;">- {{ album.artist }} ({{ album.release_year }})</span>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Наразі альбомів немає. Можете додати їх через адмін-панель.</p>
+{% endif %}
+
+{% endblock %}

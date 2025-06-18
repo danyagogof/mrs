@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Пошук користувачів</h1>
+  <form method="get">
+    <input type="text" name="q" placeholder="Введіть нікнейм..." value="{{ request.GET.q }}">
+    <button type="submit">Пошук</button>
+  </form>
+  <hr>
+  {% if users %}
+    <ul>
+      {% for user in users %}
+        <li style="display:flex;align-items:center;gap:0.5em;">
+          {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" alt="Аватарка" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+          {% else %}
+            <span style="display:inline-block;width:32px;height:32px;border-radius:50%;background:#ddd;"></span>
+          {% endif %}
+          <a href="{% url 'friend_profile' user.id %}">{{ user.username }}</a>
+          {% if user in request.user.friends.all %}
+            — Ваш друг
+            <form method="post" action="{% url 'remove_friend' user.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit">Видалити з друзів</button>
+            </form>
+          {% else %}
+            <form method="post" action="{% url 'add_friend' user.id %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit">Додати в друзі</button>
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% elif request.GET.q %}
+    <p>Користувачів не знайдено.</p>
+  {% endif %}
+{% endblock %}

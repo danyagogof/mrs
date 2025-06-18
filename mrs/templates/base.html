@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оцінки Альбомів</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="{% url 'home' %}" class="nav-btn" title="Головна"> Головна</a>
+            <a href="{% url 'album_search' %}" class="nav-btn" title="Пошук альбомів"> Альбоми</a>
+            <a href="{% url 'user_search' %}" class="nav-btn" title="Пошук користувачів"> Користувачі</a>
+        </div>
+        <span class="nav-center-title">M.R.s</span>
+        <div class="nav-right">
+        {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="nav-btn">Мій профіль</a>
+    {% else %}
+                <a href="{% url 'login' %}" class="nav-btn">Увійти</a>
+                <a href="{% url 'signup' %}" class="nav-btn" style="margin-left: 1rem;">Зареєструватися</a>
+        {% endif %}
+        </div>
+    </nav>
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <button id="theme-toggle" title="Змінити тему">🌙</button>
+    <script>
+        const btn = document.getElementById('theme-toggle');
+        const darkClass = 'dark-theme';
+        function setTheme(dark) {
+            if (dark) {
+                document.body.classList.add(darkClass);
+                btn.textContent = '☀️';
+            } else {
+                document.body.classList.remove(darkClass);
+                btn.textContent = '🌙';
+            }
+        }
+        btn.onclick = function() {
+            const isDark = !document.body.classList.contains(darkClass);
+            setTheme(isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        };
+        (function() {
+            const theme = localStorage.getItem('theme');
+            setTheme(theme === 'dark');
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; gap: 2rem;">
+    <div>
+        <img src="{{ album.cover_image_url }}" alt="Обкладинка {{ album.title }}" style="width: 300px; height: 300px;">
+        <h1>{{ album.title }}</h1>
+        <h2>{{ album.artist }} ({{ album.release_year }})</h2>
+        <h3>Треклист</h3>
+        {% if tracklist %}
+            <ol>
+                {% for track in tracklist %}
+                <li>
+                    {{ track.name }}
+                    {% if track.preview_url %}
+                        <a href="{{ track.preview_url }}" target="_blank">[прослухати фрагмент]</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p>Треклист недоступний.</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>Поставити оцінку</h3>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'album_detail' album.spotify_id %}">
+                {% csrf_token %}
+                <select name="score">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+                <button type="submit">Оцінити</button>
+            </form>
+        {% else %}
+            <p><a href="{% url 'login' %}?next={{ request.path }}">Увійдіть</a>, щоб поставити оцінку.</p>
+        {% endif %}
+
+        <hr>
+
+        <h3>Оцінки користувачів</h3>
+        {% if ratings %}
+            <ul>
+                {% for rating in ratings %}
+                <li style="display:flex;align-items:center;gap:0.5em;">
+                  {% if rating.user.avatar %}
+                    <img src="{{ rating.user.avatar.url }}" alt="Аватарка" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+                  {% else %}
+                    <span style="display:inline-block;width:32px;height:32px;border-radius:50%;background:#ddd;"></span>
+                  {% endif %}
+                  <a href="{% if rating.user == user %}{% url 'profile' %}{% else %}{% url 'friend_profile' rating.user.id %}{% endif %}" class="user-profile-link">{{ rating.user.username }}</a>: <strong>{{ rating.score }}/10</strong>
+                  {% if user.is_authenticated and rating.user != user and rating.user not in user.friends.all %}
+                    <form method="post" action="{% url 'add_friend' rating.user.id %}" style="display:inline; margin-left:0.5em;">
+                      {% csrf_token %}
+                      <button type="submit" style="background:#090; color:white; border:none; padding:0.2em 0.7em; border-radius:4px; font-size:0.95em;">Додати в друзі</button>
+                    </form>
+                  {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Ще ніхто не оцінив цей альбом.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
